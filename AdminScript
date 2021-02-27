@@ -407,37 +407,13 @@ TextBox.FocusLost:Connect(function()
 	end
 
 	if a[1] == "retools" then
-		createTool("Push", "Push People (Cooldown 15 Sec)", false, false, localPlayer.Backpack)
 		createTool("Push No Cooldown", "Push People (Cooldown 0 Sec)", false, false, localPlayer.Backpack)
-		createTool("Super Push", "Super Push People (Cooldown 15 Sec", false, false, localPlayer.Backpack)
 		createTool("Super Push No Cooldown", "Super Push People (Cooldown 0 Sec", false, false, localPlayer.Backpack)
 
-		local debounce = false
-		local Tool = localPlayer.Backpack:FindFirstChild("Push")
-		local Tool2 = localPlayer.Backpack:FindFirstChild("Push No Cooldown")
-		local Tool3 = localPlayer.Backpack:FindFirstChild("Super Push")
-		local Tool4 = localPlayer.Backpack:FindFirstChild("Super Push No Cooldown")
+		local Tool = localPlayer.Backpack:FindFirstChild("Push No Cooldown")
+		local Tool2 = localPlayer.Backpack:FindFirstChild("Super Push No Cooldown")
 
 		Tool.Equipped:Connect(function(Equipped)
-			Equipped.Button1Down:Connect(function()
-				if debounce == false then
-					debounce = true
-
-					for i ,v in pairs(game:GetDescendants()) do
-						if v:IsA("RemoteEvent") and v.Name == "PushEvent" then
-							v:FireServer()
-							return
-						end
-					end
-					wait(15)
-					debounce = false
-				else
-					return
-				end
-			end)
-		end)
-
-		Tool2.Equipped:Connect(function(Equipped)
 			Equipped.Button1Down:Connect(function()
 				for i ,v in pairs(game:GetDescendants()) do
 					if v:IsA("RemoteEvent") and v.Name == "PushEvent" then
@@ -448,28 +424,7 @@ TextBox.FocusLost:Connect(function()
 			end)
 		end)
 
-		Tool3.Equipped:Connect(function(Equipped)
-			Equipped.Button1Down:Connect(function()
-				if debounce == false then
-					debounce = true
-
-					for i ,v in pairs(game:GetDescendants()) do
-						if v:IsA("RemoteEvent") and v.Name == "PushEvent" then
-							for i = 1, 30, 1 do
-								v:FireServer()
-							end
-							return
-						end
-					end
-					wait(15)
-					debounce = false
-				else
-					return
-				end
-			end)
-		end)
-
-		Tool4.Equipped:Connect(function(Equipped)
+		Tool2.Equipped:Connect(function(Equipped)
 			Equipped.Button1Down:Connect(function()
 				for i ,v in pairs(game:GetDescendants()) do
 					if v:IsA("RemoteEvent") and v.Name == "PushEvent" then
