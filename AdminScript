@@ -181,6 +181,9 @@ newCmd("Admin Powers:")
 newCmd("goto <player>")
 newCmd("fly on/off")
 newCmd("noclip on/off")
+newCmd("speed <speed>")
+newCmd("jp <jumppower>")
+newCmd("grav <gravity>")
 newCmd("annoy on/off <player>")
 newCmd("headstand on/off <player>")
 newCmd("follow on/off <player>")
@@ -347,7 +350,19 @@ TextBox.FocusLost:Connect(function()
 			localPlayer.Character.Humanoid.PlatformStand = false
 		end)
 	end
-
+	
+	if a[1] == "speed" then
+		localPlayer.Character.Humanoid.WalkSpeed = tonumber(a[2])
+	end
+	
+	if a[1] == "jp" then
+		localPlayer.Character.Humanoid.JumpPower = tonumber(a[2])
+	end
+	
+	if a[1] == "grav" then
+		workspace.Gravity = tonumber(a[2])
+	end
+	
 	if a[1] == "annoy" then
 		if a[2] == "on" then
 			for i ,v in pairs(getPlayer(a[3])) do
