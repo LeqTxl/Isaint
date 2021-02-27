@@ -182,6 +182,7 @@ newCmd("goto <player>")
 newCmd("fly on/off")
 newCmd("noclip on/off")
 newCmd("annoy on/off <player>")
+newCmd("headstand on/off <player>")
 newCmd("follow on/off <player>")
 newCmd("infjump on/off")
 newCmd("view on/off <player>")
@@ -203,6 +204,7 @@ newCmd("rj")
 newCmd("goldboomboxgrip")
 newCmd("spam on <text>")
 newCmd("mutesounds")
+newCmd("playsounds")
 newCmd("joindate <player>")
 newCmd("")
 
@@ -546,11 +548,9 @@ TextBox.FocusLost:Connect(function()
 	
 	if a[1] == "mutesounds" then
 		for i ,v in pairs(game:GetDescendants()) do
-			if v:IsA("Sound") then
-				if v.Playing == true then
+			if v:IsA("Sound") and v.Playing == true then
 					v:Stop()
 				end
-			end
 		end
 	end
 	
@@ -624,6 +624,26 @@ TextBox.FocusLost:Connect(function()
 				if v.Name == "Hitbox" then
 					tool.TransEvent:FireServer(v, 1)
 				end
+			end
+		end
+	end
+	
+	if a[1] == "headstand" then
+		if a[2] == "on" then
+			for i ,v in pairs(getPlayer(a[3])) do
+				headstand = game:GetService("RunService").RenderStepped:Connect(function()
+					localPlayer.Character.HumanoidRootPart.CFrame = v.Character.Head.CFrame + Vector3.new(0, 2.5, 0)
+				end)
+			end
+		elseif a[2] == "off" then
+			headstand:Disconnect()
+		end
+	end
+	
+	if a[1] == "playsounds" then
+		for i,v in pairs(game:GetDescendants()) do
+			if v:IsA("Sound") and v.Playing == false then
+				v:Play()
 			end
 		end
 	end
