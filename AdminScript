@@ -147,19 +147,19 @@ function newCmd(cmdName)
 	UIAspectRatioConstraint_6.AspectRatio = 8.800
 end
 
-function getPlayer(localPlayer)
+function getPlayer(ok)
 	local player = {}
-	if localPlayer:lower() == "others" then
+	if ok:lower() == "others" then
 		for i ,v in pairs(game.Players:GetPlayers()) do
 			if v.Name ~= localPlayer.Name then
 				table.insert(player, v)
 			end
 		end
-	elseif localPlayer:lower() == "all" then
+	elseif ok:lower() == "all" then
 		for i ,v in pairs(game.Players:GetPlayers()) do
 			table.insert(player, v)
 		end
-	elseif localPlayer:lower() == "me" then
+	elseif ok:lower() == "me" then
 		for i ,v in pairs(game.Players:GetPlayers()) do
 			if v.Name == localPlayer.Name then
 				table.insert(player, v)
@@ -167,7 +167,7 @@ function getPlayer(localPlayer)
 		end
 	else
 		for i ,v in pairs(game.Players:GetPlayers()) do
-			if v.Name:lower():sub(1, #localPlayer) == localPlayer:lower() then
+			if v.Name:lower():sub(1, #ok) == ok:lower() then
 				table.insert(player, v)
 			end
 		end
@@ -191,6 +191,9 @@ newCmd("Games:")
 newCmd("(Ragdoll Engine)")
 newCmd("reantiragdoll")
 newCmd("retools")
+newCmd("reheadless <player>")
+newCmd("reunheadless <player>")
+newCmd("reredmines on/off")
 newCmd("")
 
 newCmd("Random Commands:")
@@ -567,6 +570,61 @@ TextBox.FocusLost:Connect(function()
 			local date = os.date("!*t", Time)
 			
 			sendNotification(v.Name.."'s Join date", "Player Joined on the "..date.day.."/"..date.month.."/"..date.year.."\n ("..v.AccountAge.." Days)")
+		end
+	end
+	
+	if a[1] == "reheadless" then
+		for i ,v in pairs(getPlayer(a[2])) do
+			for y, potion in pairs(game.Players:GetPlayers()) do
+				tool = potion.Backpack:FindFirstChild("OddPotion") or potion.Character:FindFirstChild("OddPotion")
+				if tool then
+					break
+				end
+			end
+			
+			for i ,v in pairs(v.Character.Head:GetChildren()) do
+				tool.TransEvent:FireServer(v, 1)
+				tool.TransEvent:FireServer(v.Parent, 1)
+			end
+		end
+	end
+	
+	if a[1] == "reunheadless" then
+		for i ,v in pairs(getPlayer(a[2])) do
+			for y, potion in pairs(game.Players:GetPlayers()) do
+				tool = potion.Backpack:FindFirstChild("OddPotion") or potion.Character:FindFirstChild("OddPotion")
+				if tool then
+					break
+				end
+			end
+
+			for i ,v in pairs(v.Character.Head:GetChildren()) do
+				tool.TransEvent:FireServer(v, 0)
+				tool.TransEvent:FireServer(v.Parent, 0)
+			end
+		end
+	end
+	
+	if a[1] == "reredmines" then
+		for y, potion in pairs(game.Players:GetPlayers()) do
+			tool = potion.Backpack:FindFirstChild("OddPotion") or potion.Character:FindFirstChild("OddPotion")
+			if tool then
+				break
+			end
+		end
+		
+		if a[2] == "on" then
+			for i ,v in pairs(game.Workspace.NewerMap.Obstacles.Minefield.Mines:GetDescendants()) do
+				if v.Name == "Hitbox" then
+					tool.TransEvent:FireServer(v, 0)
+				end
+			end
+		elseif a[2] == "off" then
+			for i ,v in pairs(game.Workspace.NewerMap.Obstacles.Minefield.Mines:GetDescendants()) do
+				if v.Name == "Hitbox" then
+					tool.TransEvent:FireServer(v, 1)
+				end
+			end
 		end
 	end
 end)
