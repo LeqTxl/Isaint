@@ -273,7 +273,8 @@ TextBox.FocusLost:Connect(function()
 			local bv = Instance.new("BodyVelocity", torso)
 			bv.velocity = Vector3.new(0,0.1,0)
 			bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
-
+			
+			
 			flyyes = game:GetService("RunService").RenderStepped:Connect(function()
 				localPlayer.Character.Humanoid.PlatformStand = true
 				if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
@@ -319,6 +320,7 @@ TextBox.FocusLost:Connect(function()
 				elseif key:lower() == "d" then
 					ctrl.r = 0
 				end
+				
 			end)
 		elseif a[2] == "off" then
 			flying = false
@@ -333,6 +335,12 @@ TextBox.FocusLost:Connect(function()
 			localPlayer.Character.HumanoidRootPart.BodyVelocity:Destroy()
 			localPlayer.Character.Humanoid.PlatformStand = false
 		end
+		
+		game.Players.LocalPlayer.Character.Humanoid.Died:Connect(function()
+			flying = false
+			flyyes:Disconnect()
+			localPlayer.Character.Humanoid.PlatformStand = false
+		end)
 	end
 
 	if a[1] == "annoy" then
