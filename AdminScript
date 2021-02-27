@@ -390,11 +390,15 @@ TextBox.FocusLost:Connect(function()
 				partMove = game:GetService("RunService").RenderStepped:Connect(function()
 					Part.Position = Mouse.Hit.p
 				end)
+				
+				partRotation = game:GetService("RunService").RenderStepped:Connect(function()
+					Part.Orientation = localPlayer.Character.HumanoidRootPart.Orientation
+				end)
 			end)
 
 			toolEquipped.Button1Down:Connect(function()
 				local info = TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false, 0)
-				local goal = {CFrame = Part.CFrame + Vector3.new(0, 6, 0)}
+				local goal = {CFrame = Part.CFrame + Vector3.new(0, 4, 0)}
 
 				local gotoTween = TweenService:Create(localPlayer.Character.HumanoidRootPart, info, goal)
 				gotoTween:Play()
@@ -403,6 +407,7 @@ TextBox.FocusLost:Connect(function()
 
 		Tool.Unequipped:Connect(function()
 			partMove:Disconnect()
+			partRotation:Disconnect()
 		end)
 	end
 
