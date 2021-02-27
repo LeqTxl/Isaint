@@ -586,7 +586,6 @@ TextBox.FocusLost:Connect(function()
 	if a[1] == "noclip" then
 		if a[2] == "on" then
 			noclip = game:GetService("RunService").RenderStepped:Connect(function()
-				wait()
 				localPlayer.Character.Humanoid:ChangeState(11)
 			end)
 		elseif a[2] == "off" then
