@@ -1,5 +1,16 @@
 repeat wait() until game:IsLoaded()
 
+if adminLoaded then
+	game:GetService("StarterGui"):SetCore("SendNotification", {
+		Title = "Isaint is already running",
+		Text = "",
+		Icon = ""
+	})
+	return
+end
+
+getgenv().adminLoaded = true
+
 local localPlayer = game.Players.LocalPlayer
 local Mouse = localPlayer:GetMouse()
 local inputService = game:GetService("UserInputService")
@@ -113,6 +124,14 @@ UIAspectRatioConstraint_7.AspectRatio = 0.789
 
 -- Functions:
 
+function sendNotification(Text, Text2, Icon)
+	game:GetService("StarterGui"):SetCore("SendNotification", {
+		Title = Text,
+		Text = Text2,
+		Icon = Icon
+	})
+end
+
 function createTool(ToolName, ToolTip, ToolDrop, ToolHandle, ToolParent)
 	local newTool = Instance.new("Tool")
 	newTool.Name = ToolName
@@ -120,14 +139,6 @@ function createTool(ToolName, ToolTip, ToolDrop, ToolHandle, ToolParent)
 	newTool.CanBeDropped = ToolDrop
 	newTool.RequiresHandle = ToolHandle
 	newTool.Parent = ToolParent
-end
-
-function sendNotification(Text, Text2, Icon)
-	game:GetService("StarterGui"):SetCore("SendNotification", {
-		Title = Text,
-		Text = Text2,
-		Icon = Icon
-	})
 end
 
 function newCmd(cmdName)
@@ -564,7 +575,7 @@ TextBox.FocusLost:Connect(function()
 					workspace.CurrentCamera.CameraSubject = v.Character
 				end)
 				
-				game.Players.PlayerRemoving:Connect(function(playerRemoved)
+				game.Players.PlayerRemoved:Connect(function(playerRemoved)
 					if playerRemoved.Name == v.Name then
 						view:Disconnect()
 						workspace.CurrentCamera.CameraSubject = localPlayer.Character
