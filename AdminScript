@@ -191,15 +191,6 @@ newCmd("infjump on/off")
 newCmd("view on/off <player>")
 newCmd("")
 
-newCmd("Games:")
-newCmd("(Ragdoll Engine)")
-newCmd("reantiragdoll")
-newCmd("retools")
-newCmd("reheadless <player>")
-newCmd("reunheadless <player>")
-newCmd("reredmines on/off")
-newCmd("")
-
 newCmd("Random Commands:")
 newCmd("prefix <prefix>")
 newCmd("re")
@@ -210,6 +201,21 @@ newCmd("mutesounds")
 newCmd("playsounds")
 newCmd("joindate <player>")
 newCmd("")
+
+newCmd("Games:")
+newCmd("(Ragdoll Engine)")
+newCmd("reantiragdoll")
+newCmd("retools")
+newCmd("reheadless <player>")
+newCmd("reunheadless <player>")
+newCmd("reredmines on/off")
+newCmd("")
+
+newCmd("(Tower of Hell")
+newCmd("tohgod")
+newCmd("tohtpend")
+newCmd("")
+
 
 newCmd("Credits:")
 newCmd("Made by LeqendaryTxl (txl#3913)")
@@ -660,6 +666,34 @@ TextBox.FocusLost:Connect(function()
 			if v:IsA("Sound") and v.Playing == false then
 				v:Play()
 			end
+		end
+	end
+	
+	if a[1] == "tohtpend" then
+		localPlayer.Character.HumanoidRootPart.CFrame = workspace.tower.sections.finish.fire.fire.CFrame + Vector3.new(0, 7, 0)
+	end
+	
+	if a[1] == "tohgod" then
+		enabled = false
+		if a[2] == "on" then
+			enabled = true
+			local function Invincibility()
+				if localPlayer.Character then
+					for i, v in pairs(localPlayer.Character:GetChildren()) do
+						if v.Name == "hitbox" then
+							v:Destroy()
+						end
+					end
+				end
+			end
+
+			while wait(0.5) do
+				if enabled == true then
+					Invincibility(localPlayer)
+				end
+			end
+		elseif a[2] == "off" then
+			enabled = false
 		end
 	end
 end)
