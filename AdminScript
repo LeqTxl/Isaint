@@ -9,7 +9,9 @@ if adminLoaded then
 	return
 end
 
-getgenv().adminLoaded = true
+pcall(function()
+	getgenv().adminLoaded = true
+end)
 
 local localPlayer = game.Players.LocalPlayer
 local Mouse = localPlayer:GetMouse()
