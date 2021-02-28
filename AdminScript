@@ -287,8 +287,8 @@ TextBox.FocusLost:Connect(function()
 			local bv = Instance.new("BodyVelocity", torso)
 			bv.velocity = Vector3.new(0,0.1,0)
 			bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
-			
-			
+
+
 			flyyes = game:GetService("RunService").RenderStepped:Connect(function()
 				localPlayer.Character.Humanoid.PlatformStand = true
 				if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
@@ -334,7 +334,7 @@ TextBox.FocusLost:Connect(function()
 				elseif key:lower() == "d" then
 					ctrl.r = 0
 				end
-				
+
 			end)
 		elseif a[2] == "off" then
 			flying = false
@@ -349,26 +349,26 @@ TextBox.FocusLost:Connect(function()
 			localPlayer.Character.HumanoidRootPart.BodyVelocity:Destroy()
 			localPlayer.Character.Humanoid.PlatformStand = false
 		end
-		
+
 		game.Players.LocalPlayer.Character.Humanoid.Died:Connect(function()
 			flying = false
 			flyyes:Disconnect()
 			localPlayer.Character.Humanoid.PlatformStand = false
 		end)
 	end
-	
+
 	if a[1] == "speed" then
 		localPlayer.Character.Humanoid.WalkSpeed = tonumber(a[2])
 	end
-	
+
 	if a[1] == "jp" then
 		localPlayer.Character.Humanoid.JumpPower = tonumber(a[2])
 	end
-	
+
 	if a[1] == "grav" then
 		workspace.Gravity = tonumber(a[2])
 	end
-	
+
 	if a[1] == "annoy" then
 		if a[2] == "on" then
 			for i ,v in pairs(getPlayer(a[3])) do
@@ -416,7 +416,7 @@ TextBox.FocusLost:Connect(function()
 				partMove = game:GetService("RunService").RenderStepped:Connect(function()
 					Part.Position = Mouse.Hit.p
 				end)
-				
+
 				partRotation = game:GetService("RunService").RenderStepped:Connect(function()
 					Part.Orientation = localPlayer.Character.HumanoidRootPart.Orientation
 				end)
@@ -560,21 +560,32 @@ TextBox.FocusLost:Connect(function()
 	if a[1] == "view" then
 		if a[2] == "on" then
 			for i ,v in pairs(getPlayer(a[3])) do
-				workspace.CurrentCamera.CameraSubject = v.Character
+				view = game:GetService("RunService").RenderStepped:Connect(function()
+					workspace.CurrentCamera.CameraSubject = v.Character
+				end)
+				
+				game.Players.PlayerRemoving:Connect(function(playerRemoved)
+					if playerRemoved.Name == v.Name then
+						view:Disconnect()
+						workspace.CurrentCamera.CameraSubject = localPlayer.Character
+						sendNotification("View Stopped!", "Player left!")
+					end
+				end)
 			end
 		elseif a[2] == "off" then
+			view:Disconnect()
 			workspace.CurrentCamera.CameraSubject = localPlayer.Character
 		end
 	end
-	
+
 	if a[1] == "mutesounds" then
 		for i ,v in pairs(game:GetDescendants()) do
 			if v:IsA("Sound") and v.Playing == true then
-					v:Stop()
-				end
+				v:Stop()
+			end
 		end
 	end
-	
+
 	if a[1] == "noclip" then
 		if a[2] == "on" then
 			noclip = game:GetService("RunService").RenderStepped:Connect(function()
@@ -584,16 +595,16 @@ TextBox.FocusLost:Connect(function()
 			noclip:Disconnect()
 		end
 	end
-	
+
 	if a[1] == "joindate" then
 		for i ,v in pairs(getPlayer(a[2])) do
 			local Time = os.time() - (60 * 60 * 24 * v.AccountAge)
 			local date = os.date("!*t", Time)
-			
+
 			sendNotification(v.Name.."'s Join date", "Player Joined on the "..date.day.."/"..date.month.."/"..date.year.."\n ("..v.AccountAge.." Days)")
 		end
 	end
-	
+
 	if a[1] == "reheadless" then
 		for i ,v in pairs(getPlayer(a[2])) do
 			for y, potion in pairs(game.Players:GetPlayers()) do
@@ -602,14 +613,14 @@ TextBox.FocusLost:Connect(function()
 					break
 				end
 			end
-			
+
 			for i ,v in pairs(v.Character.Head:GetChildren()) do
 				tool.TransEvent:FireServer(v, 1)
 				tool.TransEvent:FireServer(v.Parent, 1)
 			end
 		end
 	end
-	
+
 	if a[1] == "reunheadless" then
 		for i ,v in pairs(getPlayer(a[2])) do
 			for y, potion in pairs(game.Players:GetPlayers()) do
@@ -625,7 +636,7 @@ TextBox.FocusLost:Connect(function()
 			end
 		end
 	end
-	
+
 	if a[1] == "reredmines" then
 		for y, potion in pairs(game.Players:GetPlayers()) do
 			tool = potion.Backpack:FindFirstChild("OddPotion") or potion.Character:FindFirstChild("OddPotion")
@@ -633,7 +644,7 @@ TextBox.FocusLost:Connect(function()
 				break
 			end
 		end
-		
+
 		if a[2] == "on" then
 			for i ,v in pairs(game.Workspace.NewerMap.Obstacles.Minefield.Mines:GetDescendants()) do
 				if v.Name == "Hitbox" then
@@ -648,7 +659,7 @@ TextBox.FocusLost:Connect(function()
 			end
 		end
 	end
-	
+
 	if a[1] == "headstand" then
 		if a[2] == "on" then
 			for i ,v in pairs(getPlayer(a[3])) do
@@ -660,7 +671,7 @@ TextBox.FocusLost:Connect(function()
 			headstand:Disconnect()
 		end
 	end
-	
+
 	if a[1] == "playsounds" then
 		for i,v in pairs(game:GetDescendants()) do
 			if v:IsA("Sound") and v.Playing == false then
@@ -668,32 +679,24 @@ TextBox.FocusLost:Connect(function()
 			end
 		end
 	end
-	
+
 	if a[1] == "tohtpend" then
 		localPlayer.Character.HumanoidRootPart.CFrame = workspace.tower.sections.finish.fire.fire.CFrame + Vector3.new(0, 7, 0)
 	end
-	
+
 	if a[1] == "tohgod" then
-		enabled = false
-		if a[2] == "on" then
-			enabled = true
-			local function Invincibility()
-				if localPlayer.Character then
-					for i, v in pairs(localPlayer.Character:GetChildren()) do
-						if v.Name == "hitbox" then
-							v:Destroy()
-						end
+		local function Invincibility()
+			if localPlayer.Character then
+				for i, v in pairs(localPlayer.Character:GetChildren()) do
+					if v.Name == "hitbox" then
+						v:Destroy()
 					end
 				end
 			end
+		end
 
-			while wait(0.5) do
-				if enabled == true then
-					Invincibility(localPlayer)
-				end
-			end
-		elseif a[2] == "off" then
-			enabled = false
+		while wait(0.5) do
+			Invincibility(localPlayer)
 		end
 	end
 end)
