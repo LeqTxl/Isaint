@@ -222,6 +222,7 @@ newCmd("retools")
 newCmd("reheadless <player>")
 newCmd("reunheadless <player>")
 newCmd("reredmines on/off")
+newCmd("resmoothbomb on/off")
 newCmd("")
 
 newCmd("(Tower of Hell")
@@ -487,7 +488,7 @@ TextBox.FocusLost:Connect(function()
 			Equipped.Button1Down:Connect(function()
 				for i ,v in pairs(game:GetDescendants()) do
 					if v:IsA("RemoteEvent") and v.Name == "PushEvent" then
-						for i = 1, 10000, 1 do
+						for i = 1, 300, 1 do
 							v:FireServer()
 						end
 						return
@@ -727,4 +728,88 @@ TextBox.FocusLost:Connect(function()
 			Invincibility(localPlayer)
 		end
 	end
+	
+	if a[1] == "rtoolmesh" then
+		for i ,v in pairs(localPlayer.Backpack:GetDescendants()) do
+			if v:IsA("Tool") and v:FindFirstChild("Handle") and v.Handle:FindFirstChildOfClass("SpecialMesh") ~= nil then
+				v.Handle:FindFirstChildOfClass("SpecialMesh"):Destroy()
+			end
+		end
+		
+		for i ,v in pairs(localPlayer.Character:GetDescendants()) do
+			if v:IsA("Tool") and v:FindFirstChild("Handle") and v.Handle:FindFirstChildOfClass("SpecialMesh") ~= nil then
+				v.Handle:FindFirstChildOfClass("SpecialMesh"):Destroy()
+			end
+		end
+	end
+	
+	if a[1] == "rhats" then
+		for i ,v in pairs(localPlayer.Character:GetDescendants()) do
+			if v:IsA("Accessory") then
+				v:Destroy()
+			end
+		end
+	end
+	
+	if a[1] == "rhatmesh" then
+		for i ,v in pairs(localPlayer.Character:GetDescendants()) do
+			if v:IsA("Accessory") and v.Handle:FindFirstChildOfClass("SpecialMesh") ~= nil then
+				v.Handle:FindFirstChildOfClass("SpecialMesh"):Destroy()
+			end
+		end
+	end
+	
+	if a[1] == "drophats" then
+		for i ,v in pairs(localPlayer.Character:GetDescendants()) do
+			if v:IsA("Accessory") then
+				v.Parent = workspace
+			end
+		end
+	end
+	
+	if a[1] == "resmoothbomb" then
+		for y, potion in pairs(game.Players:GetPlayers()) do
+			tool = potion.Backpack:FindFirstChild("OddPotion") or potion.Character:FindFirstChild("OddPotion")
+			if tool then
+				break
+			end
+		end
+		
+		if a[2] == "on" then
+			for i ,v in pairs(localPlayer.Backpack:GetChildren()) do
+				if v.Name == "ImpulseGrenade" then
+					for i1, v1 in pairs(localPlayer.Backpack.ImpulseGrenade.Handle:GetChildren()) do
+						tool.TransEvent:FireServer(v1, 1)	
+					end
+				end
+			end
+			
+			for i ,v in pairs(localPlayer.Character:GetChildren()) do
+				if v.Name == "ImpulseGrenade" then
+					for i1, v1 in pairs(localPlayer.Character.ImpulseGrenade.Handle:GetChildren()) do
+						tool.TransEvent:FireServer(v1, 1)	
+					end
+				end
+			end
+		elseif a[2] == "off" then
+			for i ,v in pairs(localPlayer.Backpack:GetChildren()) do
+				if v.Name == "ImpulseGrenade" then
+					for i1, v1 in pairs(localPlayer.Backpack.ImpulseGrenade.Handle:GetChildren()) do
+						tool.TransEvent:FireServer(v1, 0)	
+					end
+				end
+			end
+
+			for i ,v in pairs(localPlayer.Character:GetChildren()) do
+				if v.Name == "ImpulseGrenade" then
+					for i1, v1 in pairs(localPlayer.Character.ImpulseGrenade.Handle:GetChildren()) do
+						tool.TransEvent:FireServer(v1, 0)	
+					end
+				end
+			end
+		end
+	end
 end)
+
+
+
