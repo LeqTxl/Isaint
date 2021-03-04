@@ -452,11 +452,11 @@ TextBox.FocusLost:Connect(function()
 	end
 
 	if a[1] == "retools" then
-		createTool("Push", "Push People (Cooldown 0 Sec)", false, false, localPlayer.Backpack)
+		createTool("Push \n", "Push People (Cooldown 0 Sec)", false, false, localPlayer.Backpack)
 		createTool("Super Push", "Super Push People (Cooldown 0 Sec", false, false, localPlayer.Backpack)
 		createTool("Mega Push", "Mega Push People (Cooldown 0 Sec", false, false, localPlayer.Backpack)
 		
-		local Tool = localPlayer.Backpack:FindFirstChild("Push")
+		local Tool = localPlayer.Backpack:FindFirstChild("Push \n")
 		local Tool2 = localPlayer.Backpack:FindFirstChild("Super Push")
 		local Tool3 = localPlayer.Backpack:FindFirstChild("Mega Push")
 
