@@ -202,6 +202,7 @@ newCmd("headstand on/off <player>")
 newCmd("follow on/off <player>")
 newCmd("infjump on/off")
 newCmd("view on/off <player>")
+newCmd("feinvis on/off")
 newCmd("")
 
 newCmd("Random Commands:")
@@ -223,6 +224,7 @@ newCmd("reheadless <player>")
 newCmd("reunheadless <player>")
 newCmd("reredmines on/off")
 newCmd("resmoothbomb on/off")
+newCmd("rebald on/off <player>")
 newCmd("")
 
 newCmd("(Tower of Hell")
@@ -804,6 +806,33 @@ TextBox.FocusLost:Connect(function()
 				if v.Name == "ImpulseGrenade" then
 					for i1, v1 in pairs(localPlayer.Character.ImpulseGrenade.Handle:GetChildren()) do
 						tool.TransEvent:FireServer(v1, 0)	
+					end
+				end
+			end
+		end
+	end
+	
+	if a[1] == "rebald" then
+		for y, potion in pairs(game.Players:GetPlayers()) do
+			tool = potion.Backpack:FindFirstChild("OddPotion") or potion.Character:FindFirstChild("OddPotion")
+			if tool then
+				break
+			end
+		end
+		
+		if a[2] == "on" then
+			for i ,v in pairs(getPlayer(a[3]))  do
+				for i1, v1 in pairs(v.Character:GetChildren()) do
+					if v1:IsA("Accessory") then
+						tool.TransEvent:FireServer(v1.Handle, 1)
+					end
+				end
+			end
+		elseif a[2] == "off" then
+			for i ,v in pairs(getPlayer(a[3]))  do
+				for i1, v1 in pairs(v.Character:GetChildren()) do
+					if v1:IsA("Accessory") then
+						tool.TransEvent:FireServer(v1.Handle, 0)
 					end
 				end
 			end
