@@ -476,7 +476,7 @@ newCmd("float (G=toggle,E=up,Q=down)")
 newCmd("floatspeed <up> <down>")
 newCmd("headhitter (R=toggle)")
 newCmd("lag on/off")
-newcmd("blow on/off <player>")
+newCmd("blow on/off <player>")
 newCmd("")
 
 newCmd("Random Commands:")
@@ -1828,7 +1828,7 @@ TextBox.FocusLost:Connect(function()
 			for i ,v in pairs(getPlayer(a[3])) do
 				spawn(function()
 					blow = game:GetService("RunService").RenderStepped:Connect(function()
-						localPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame - Vector3.new(0,-1,0)
+						localPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame - Vector3.new(0,-1,0) * CFrame.Angles(math.rad(180),0 ,0)
 					end)
 				end)
 			end
