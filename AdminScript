@@ -476,7 +476,8 @@ newCmd("float (G=toggle,E=up,Q=down)")
 newCmd("floatspeed <up> <down>")
 newCmd("headhitter (R=toggle)")
 newCmd("lag on/off")
-newCmd("blow on/off <player>")
+--newCmd("backpack on/off <player>") !! FIXING !!
+newCmd("stand on/off <player>")
 newCmd("")
 
 newCmd("Random Commands:")
@@ -1804,7 +1805,7 @@ TextBox.FocusLost:Connect(function()
 			end
 		end
 	end
-	
+
 	if a[1] == "lag" then
 		if a[2] == "on" then
 			fakelagging = true
@@ -1821,17 +1822,33 @@ TextBox.FocusLost:Connect(function()
 		end
 	end
 	
-	if a[1] == "blow" then
+	--[[if a[1] == "backpack" then
 		if a[2] == "on" then
 			localPlayer.Character.Humanoid.Sit = true
-			
 			for i ,v in pairs(getPlayer(a[3])) do
 				spawn(function()
-					blow = game:GetService("RunService").RenderStepped:Connect(function()
-						localPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame - Vector3.new(0,-1,0) * CFrame.Angles(math.rad(180),0 ,0)
+					backpack = game:GetService("RunService").RenderStepped:Connect(function()
+						localPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,1.5)
 					end)
 				end)
 			end
+		elseif a[2] == "off" then
+			backpack:Disconnect()
+			localPlayer.Character.Humanoid.Sit = false
+		end
+	end]] --Trying with a seat!
+	
+	if a[1] == "stand" then
+		if a[2] == "on" then
+			for i ,v in pairs(getPlayer(a[3])) do
+				spawn(function()
+					stand = game:GetService("RunService").RenderStepped:Connect(function()
+						localPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(2, .6, 2)
+					end)
+				end)
+			end
+		elseif a[2] == "off" then
+			stand:Disconnect()
 		end
 	end
 end)
