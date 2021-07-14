@@ -476,7 +476,6 @@ newCmd("float (G=toggle,E=up,Q=down)")
 newCmd("floatspeed <up> <down>")
 newCmd("headhitter (R=toggle)")
 newCmd("lag on/off")
---newCmd("backpack on/off <player>") !! FIXING !!
 newCmd("stand on/off <player>")
 newCmd("")
 
@@ -1822,22 +1821,6 @@ TextBox.FocusLost:Connect(function()
 		end
 	end
 	
-	--[[if a[1] == "backpack" then
-		if a[2] == "on" then
-			localPlayer.Character.Humanoid.Sit = true
-			for i ,v in pairs(getPlayer(a[3])) do
-				spawn(function()
-					backpack = game:GetService("RunService").RenderStepped:Connect(function()
-						localPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,1.5)
-					end)
-				end)
-			end
-		elseif a[2] == "off" then
-			backpack:Disconnect()
-			localPlayer.Character.Humanoid.Sit = false
-		end
-	end]] --Trying with a seat!
-	
 	if a[1] == "stand" then
 		if a[2] == "on" then
 			for i ,v in pairs(getPlayer(a[3])) do
@@ -1849,6 +1832,21 @@ TextBox.FocusLost:Connect(function()
 			end
 		elseif a[2] == "off" then
 			stand:Disconnect()
+		end
+	end
+	
+	if a[1] == "backpack" then
+		if a[2] == "on" then
+			localPlayer.Character.Humanoid.Sit = true
+			for i ,v in pairs(getPlayer(a[3])) do
+				spawn(function()
+					backpack = game:GetService("RunService").RenderStepped:Connect(function()
+						localPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.Angles(0,math.rad(0),0) * CFrame.new(0,0,0.6)
+					end)
+				end)
+			end
+		elseif a[2] == "off" then
+			backpack:Disconnect()
 		end
 	end
 end)
@@ -1880,3 +1878,6 @@ inputService.InputEnded:Connect(function(input)
 		Dragging = false
 	end
 end)
+
+
+
